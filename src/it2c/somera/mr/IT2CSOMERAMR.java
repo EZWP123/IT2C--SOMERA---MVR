@@ -29,6 +29,37 @@ public class IT2CSOMERAMR {
 
 
     }
+     
+      public void viewRent(){
+        Scanner sc = new Scanner(System.in);
+        config conf = new config();
+        
+        System.out.print("Enter Last Name to view: ");
+        String lname = sc.next();
+        
+        String sql = "SELECT * FROM Renting WHERE r_lname = ?";
+        String[] columnHeaders = {"Movie", "First Name", "Last Name", "Email", "Contact No."};
+        String[] columnNames = {"r_movie", "r_fname", "r_lname", "r_email", "r_contact"};
+        
+        conf.viewRecords(sql, columnHeaders, columnNames, lname);
+    }
+      
+      public void deleteRent(){
+        Scanner sc = new Scanner(System.in);
+        config conf = new config();
+        
+       System.out.print("Enter Last Name to delete: ");
+    String lname = sc.next();
+    
+     String deleteSql = "DELETE FROM Renting WHERE r_lname = ?";
+    conf.deleteRecord(deleteSql, lname);
+    
+  
+}
+   
+
+        
+    
   
     public static void main(String[] args) {
     
@@ -54,8 +85,19 @@ public class IT2CSOMERAMR {
                 IT2CSOMERAMR demo = new IT2CSOMERAMR();
                demo.addRent();
                break;
-               
                 
+                case 2: 
+                 IT2CSOMERAMR demo2 = new IT2CSOMERAMR();
+                demo2.viewRent();   
+                break;
+                
+                case 3:  
+                break;
+                
+                case 4:
+                    IT2CSOMERAMR demo4 = new IT2CSOMERAMR();
+                demo4.deleteRent();
+                break;
             }
             
             System.out.println("Continue? (yes/No)");
