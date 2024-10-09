@@ -1,6 +1,8 @@
 
 package it2c.somera.mr;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.Scanner;
 
 
@@ -29,30 +31,55 @@ public class IT2CSOMERAMR {
 
 
     }
+
      
-      public void viewRent(){
-        Scanner sc = new Scanner(System.in);
-        config conf = new config();
-        
-        System.out.print("Enter Last Name to view: ");
-        String lname = sc.next();
-        
-        String sql = "SELECT * FROM Renting WHERE r_lname = ?";
-        String[] columnHeaders = {"Movie", "First Name", "Last Name", "Email", "Contact No."};
-        String[] columnNames = {"r_movie", "r_fname", "r_lname", "r_email", "r_contact"};
-        
-        conf.viewRecords(sql, columnHeaders, columnNames, lname);
-    }
-      
-      public void deleteRent(){
-        Scanner sc = new Scanner(System.in);
-        config conf = new config();
-        
-       System.out.print("Enter Last Name to delete: ");
-    String lname = sc.next();
     
-     String deleteSql = "DELETE FROM Renting WHERE r_lname = ?";
-    conf.deleteRecord(deleteSql, lname);
+        private void viewRent() {
+         config conf = new config();   
+        String cqry = "SELECT * FROM Renting";
+        String[] hrds = {"ID", "Name", "Lastname", "Email", "Contact", "Movie"};
+        String[] clmns = {"r_id", "r_fname", "r_lname", "r_email", "r_contact", "r_movie"};
+
+        conf.viewRecords (cqry, hrds, clmns);
+        
+        }
+        
+        private void Updaterent(){
+        Scanner sc = new Scanner(System.in);
+            System.out.println("Enter ID to update");
+        int id = sc.nextInt();
+        
+            System.out.println("Enter new first name");
+            String nfname = sc.next();
+            
+             System.out.println("Enter new last name");
+            String nlname = sc.next();
+            
+             System.out.println("Enter new email");
+            String nemail = sc.next();
+            
+             System.out.println("Enter new contact");
+            String ncontact = sc.next();
+            
+             System.out.println("Enter new movie");
+            String nmovie = sc.next();
+            
+            String qry = "UPDATE Renting SET r_fname = ?, r_lname = ?, r_email = ?, r_contact = ?, r_movie = ? WHERE r_id = ?";
+            config conf = new config();
+            conf.updateRecord(qry, nfname, nlname,nemail,ncontact,nmovie,id);
+        
+        }
+      
+      
+      private void deleteRent(){
+        Scanner sc = new Scanner(System.in);
+        config conf = new config();
+        
+       System.out.print("Enter ID to delete: ");
+    String r_id = sc.next();
+    
+     String deleteSql = "DELETE FROM Renting WHERE r_id = ?";
+    conf.deleteRecord(deleteSql, r_id);
     
   
 }
@@ -91,12 +118,16 @@ public class IT2CSOMERAMR {
                 demo2.viewRent();   
                 break;
                 
-                case 3:  
+                case 3:  IT2CSOMERAMR demo3 = new IT2CSOMERAMR();             
+                demo3.Updaterent();
+                demo3.viewRent();
                 break;
                 
-                case 4:
+                case 4:               
                     IT2CSOMERAMR demo4 = new IT2CSOMERAMR();
+                     demo4.viewRent();
                 demo4.deleteRent();
+                 demo4.viewRent();
                 break;
             }
             
@@ -109,5 +140,5 @@ public class IT2CSOMERAMR {
         }while(response.equals("yes"));
         System.out.println("Thankyou");
     }
-    
+
 }
