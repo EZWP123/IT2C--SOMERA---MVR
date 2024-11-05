@@ -1,0 +1,734 @@
+package it2c.somera.mr;
+import java.util.Scanner;
+public class Guest {
+    
+    
+    
+   
+    public void gtransaction(){
+     Scanner sc = new Scanner(System.in);
+     String response;
+     do{
+          System.out.println("RENTING APP");
+            
+            System.out.println("1. ADD GUEST");
+            System.out.println("2. VIEW GUEST ");
+            System.out.println("3. UPDATE GUEST");      
+            System.out.println("4. DELETE GUEST");
+             System.out.println("5. EXIT");
+            System.out.println("Enter action");           
+            int  act = sc.nextInt();
+          Guest cs = new Guest();
+            switch(act){
+                case 1:         cs.addGuest();
+                                cs.viewGuest();     
+             
+               break;
+                
+                case 2:  cs.viewGuest();
+                break;
+                
+                case 3:         cs.viewGuest();
+                                cs.updateGuest();
+                                cs.viewGuest();
+                break;
+                
+                case 4:          cs.viewGuest();
+                                cs.deleteGuest();
+                                cs.viewGuest();
+                break;
+                
+                case 5:
+                break;
+                
+            }
+            
+            System.out.println("Continue? (yes/No)");
+                response = sc.next();
+         
+            
+            
+            
+        }while(response.equals("yes"));
+        System.out.println("Thankyou");
+                  
+      
+     
+    System.out.println("Do you want to continue? (yes/no):");
+     response = sc.next();
+    while(response.equalsIgnoreCase("yes"));
+             
+    }
+    
+     public void addGuest(){
+        Scanner sc = new Scanner(System.in);
+        config conf = new config();
+        
+       
+        System.out.print(" First Name: ");
+        String fname = sc.next();
+        System.out.print(" Last Name: ");
+        String lname = sc.next();
+        System.out.print(" Email: ");
+        String email = sc.next();
+        System.out.print(" Contact no.: ");
+        String contact = sc.next();
+      
+        String sql = "INSERT INTO Renting ( r_fname, r_lname, r_email, r_contact) VALUES (  ?, ?, ?, ?)";
+        conf.addRecord(sql, fname, lname, email, contact);
+    }
+     
+    
+        public void viewGuest(){
+         config conf = new config();   
+        String cqry = "SELECT * FROM Renting";
+        String[] hrds = {"ID", "Name", "Lastname", "Email", "Contact"};
+        String[] clmns = {"r_id", "r_fname", "r_lname", "r_email", "r_contact"};
+        conf.viewRecords (cqry, hrds, clmns);
+        
+        }
+        
+        private void updateGuest(){
+            
+        Scanner sc = new Scanner(System.in);
+        config conf = new config();
+            System.out.println("Enter ID to update");     
+            int id = sc.nextInt();
+
+       while(conf.getSingleValue("SELECT m_id FROM tbl_movies WHERE m_id = ?",  id)  == 0){
+            System.out.println("SELECTED ID DOESNT EXIST");
+            System.out.println("PLEASE TRY AGAIN:");
+            id = sc.nextInt();
+    }
+
+    
+            System.out.println("Enter new first name");
+            String nfname = sc.next();
+            
+             System.out.println("Enter new last name");
+            String nlname = sc.next();
+            
+             System.out.println("Enter new email");
+            String nemail = sc.next();
+            
+             System.out.println("Enter new contact");
+            String ncontact = sc.next();
+            String qry = "UPDATE Renting SET r_fname = ?, r_lname = ?, r_email = ?, r_contact = ? WHERE r_id = ?";        
+            conf.updateRecord(qry, nfname, nlname,nemail,ncontact,id);
+        
+        }
+      
+      
+      public void deleteGuest(){
+        Scanner sc = new Scanner(System.in);
+        config conf = new config();
+        
+       System.out.print("Enter ID to delete: ");
+    int id = sc.nextInt();
+    while(conf.getSingleValue("SELECT r_id FROM Renting WHERE r_id = ?",  id)  == 0){
+            System.out.println("SELECTED ID DOESNT EXIST");
+            System.out.println("PLEASE TRY AGAIN:");
+            id = sc.nextInt();
+    }
+     String qry = "DELETE FROM Renting WHERE r_id = ?";
+    conf.deleteRecord(qry,String.valueOf(id));
+    
+      }
+}
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+package it2c.somera.mr;
+
+import java.util.Scanner;
+
+
+public class Movies {
+    
+        public void mtransaction(){
+     Scanner sc = new Scanner(System.in);
+     String id;
+     String response;
+     do{
+         System.out.println("\n.......................................................................");
+          System.out.println("MOVIE PANEL");
+            System.out.println("1. ADD MOVIES");
+            System.out.println("2. VIEW MOVIES ");
+            System.out.println("3. UPDATE MOVIES");      
+            System.out.println("4. DELETE MOVIES");
+             System.out.println("5. EXIT");
+            System.out.println("Enter action");           
+            int  act = sc.nextInt();
+          Movies mv = new Movies();
+            switch(act){
+                case 1:           mv.addMovies();
+                                    mv.viewMovies();
+               break;
+                                    
+                case 2:             mv.viewMovies();
+                break;
+                
+                case 3:             mv.viewMovies();
+                                        mv.updateMovies();
+                                        mv.viewMovies();
+                break;              
+                                     
+                    
+                case 4:         mv.viewMovies();
+                                    mv.deleteMovies();
+                                    mv.viewMovies();
+                break;
+                
+                case 5:
+                break;
+                
+            }
+            
+            System.out.println("Continue? (yes/No)");
+                response = sc.next();
+         
+            
+            
+            
+        
+                  
+      
+     
+        
+        }while(response.equalsIgnoreCase("yes"));        
+}
+
+
+public void addMovies(){
+Scanner sc = new Scanner(System.in);
+
+    System.out.println("Movie Name");
+    String mname = sc.next();
+    
+    System.out.println("Movie genre");
+        String mgenre = sc.next();
+        
+    System.out.println("Movie Duration");
+        String mduration = sc.next();
+        
+        System.out.println("Movie Price");
+        Double price = sc.nextDouble();
+        
+    System.out.println("Movie Rating");
+       String mrating = sc.next();
+       
+String qry  = " INSERT INTO tbl_movies (m_name, m_genre, m_duration, m_price, m_rating) VALUES  (?,   ?,    ?,    ?,     ?)";
+config conf = new config();
+conf.addRecord(qry, mname, mgenre, mduration, price, mrating);
+
+}
+ public void viewMovies(){
+         config conf = new config();   
+        String cqry = "SELECT * FROM tbl_movies";
+        String[] hrds = {"ID", "Movie name", "Movie Genre", "Movie Duration", "Movie Price", "Movie Rating"};
+        String[] clmns = {"m_id", "m_name", "m_genre", "m_duration", "m_price" ,"m_rating"};
+        conf.viewRecords (cqry, hrds, clmns);
+        
+        }
+
+    
+        
+
+        
+        private void updateMovies(){
+            
+        Scanner sc = new Scanner(System.in);
+        config conf = new config();
+            System.out.println("Enter ID to update");     
+            int id = sc.nextInt();
+            
+            while(conf.getSingleValue("SELECT m_id FROM tbl_movies WHERE m_id = ?", id)==0){
+            System.out.println("SELECTED ID DOESNT EXIST");
+            System.out.println("PLEASE TRY AGAIN:");
+            id = sc.nextInt();
+            
+        }
+    
+            System.out.println("Enter new movie name");
+            String mname = sc.next();      
+             System.out.println("Enter movie genre");
+            String mgenre = sc.next();          
+             System.out.println("Enter movie duration");
+            String mduration = sc.next();           
+             System.out.println("Movie Price");
+            Double price = sc.nextDouble();
+             System.out.println("Enter movie rating");
+            String mrating = sc.next();
+            String qry = "UPDATE tbl_movies SET m_name = ?, m_genre = ?, m_duration = ?,  m_price = ?, m_rating = ? WHERE m_id = ?";        
+            conf.updateRecord(qry, mname , mgenre, mduration , price, mrating, id); 
+        
+        }
+        
+        public void deleteMovies(){
+        Scanner sc = new Scanner(System.in);
+        config conf = new config();
+        
+       System.out.print("Enter ID to delete: ");
+        int id = sc.nextInt();
+
+       while(conf.getSingleValue("SELECT m_id FROM tbl_movies WHERE m_id = ?",  id)  == 0){
+            System.out.println("SELECTED ID DOESNT EXIST");
+            System.out.println("PLEASE TRY AGAIN:");
+            id = sc.nextInt();
+    }
+     String qry = "DELETE FROM tbl_movies WHERE m_id = ?";
+    conf.deleteRecord(qry,String.valueOf(id));
+        
+}
+        
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+package it2c.somera.mr;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+
+
+
+public class config {
+   
+    public static Connection connectDB() {
+        Connection con = null;
+        try {
+            Class.forName("org.sqlite.JDBC"); 
+            con = DriverManager.getConnection("jdbc:sqlite:somera.db");
+            System.out.println("Connection Successful");
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Connection Failed: " + e);
+        }
+        return con;
+    }
+
+    
+      public void addRecord(String sql, Object... values) {
+    try (Connection conn = this.connectDB(); // Use the connectDB method
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        // Loop through the values and set them in the prepared statement dynamically
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] instanceof Integer) {
+                pstmt.setInt(i + 1, (Integer) values[i]); // If the value is Integer
+            } else if (values[i] instanceof Double) {
+                pstmt.setDouble(i + 1, (Double) values[i]); // If the value is Double
+            } else if (values[i] instanceof Float) {
+                pstmt.setFloat(i + 1, (Float) values[i]); // If the value is Float
+            } else if (values[i] instanceof Long) {
+                pstmt.setLong(i + 1, (Long) values[i]); // If the value is Long
+            } else if (values[i] instanceof Boolean) {
+                pstmt.setBoolean(i + 1, (Boolean) values[i]); // If the value is Boolean
+            } else if (values[i] instanceof java.util.Date) {
+                pstmt.setDate(i + 1, new java.sql.Date(((java.util.Date) values[i]).getTime())); // If the value is Date
+            } else if (values[i] instanceof java.sql.Date) {
+                pstmt.setDate(i + 1, (java.sql.Date) values[i]); // If it's already a SQL Date
+            } else if (values[i] instanceof java.sql.Timestamp) {
+                pstmt.setTimestamp(i + 1, (java.sql.Timestamp) values[i]); // If the value is Timestamp
+            } else {
+                pstmt.setString(i + 1, values[i].toString()); // Default to String for other types
+            }
+        }
+
+        pstmt.executeUpdate();
+        System.out.println("Record added successfully!");
+    } catch (SQLException e) {
+        System.out.println("Error adding record: " + e.getMessage());
+    }
+}
+   
+
+
+
+   public void viewRecords(String sqlQuery, String[] columnHeaders, String[] columnNames) {
+        // Check that columnHeaders and columnNames arrays are the same length
+        if (columnHeaders.length != columnNames.length) {
+            System.out.println("Error: Mismatch between column headers and column names.");
+            return;
+        }
+
+        try (Connection conn = this.connectDB();
+             PreparedStatement pstmt = conn.prepareStatement(sqlQuery);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            // Print the headers dynamically
+            StringBuilder headerLine = new StringBuilder();
+            headerLine.append("--------------------------------------------------------------------------------\n| ");
+            for (String header : columnHeaders) {
+                headerLine.append(String.format("%-20s | ", header)); // Adjust formatting as needed
+            }
+            headerLine.append("\n--------------------------------------------------------------------------------");
+
+            System.out.println(headerLine.toString());
+
+            // Print the rows dynamically based on the provided column names
+            while (rs.next()) {
+                StringBuilder row = new StringBuilder("| ");
+                for (String colName : columnNames) {
+                    String value = rs.getString(colName);
+                    row.append(String.format("%-20s | ", value != null ? value : "")); // Adjust formatting
+                }
+                System.out.println(row.toString());
+            }
+            System.out.println("--------------------------------------------------------------------------------");
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving records: " + e.getMessage());
+        }
+    }
+
+
+
+      public void deleteRecord(String sql, String... values) {
+        try (Connection conn = this.connectDB();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            for (int i = 0; i < values.length; i++) {
+                pstmt.setString(i + 1, values[i]);
+            }
+
+            pstmt.executeUpdate();
+            System.out.println("Record deleted successfully!");
+        } catch (SQLException e) {
+            System.out.println("Error deleting record: " + e.getMessage());
+        }
+    
+
+      }
+
+    public void updateRecord(String sql, Object... values) {
+        try (Connection conn = this.connectDB(); // Use the connectDB method
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Loop through the values and set them in the prepared statement dynamically
+            for (int i = 0; i < values.length; i++) {
+                if (values[i] instanceof Integer) {
+                    pstmt.setInt(i + 1, (Integer) values[i]); // If the value is Integer
+                } else if (values[i] instanceof Double) {
+                    pstmt.setDouble(i + 1, (Double) values[i]); // If the value is Double
+                } else if (values[i] instanceof Float) {
+                    pstmt.setFloat(i + 1, (Float) values[i]); // If the value is Float
+                } else if (values[i] instanceof Long) {
+                    pstmt.setLong(i + 1, (Long) values[i]); // If the value is Long
+                } else if (values[i] instanceof Boolean) {
+                    pstmt.setBoolean(i + 1, (Boolean) values[i]); // If the value is Boolean
+                } else if (values[i] instanceof java.util.Date) {
+                    pstmt.setDate(i + 1, new java.sql.Date(((java.util.Date) values[i]).getTime())); // If the value is Date
+                } else if (values[i] instanceof java.sql.Date) {
+                    pstmt.setDate(i + 1, (java.sql.Date) values[i]); // If it's already a SQL Date
+                } else if (values[i] instanceof java.sql.Timestamp) {
+                    pstmt.setTimestamp(i + 1, (java.sql.Timestamp) values[i]); // If the value is Timestamp
+                } else {
+                    pstmt.setString(i + 1, values[i].toString()); // Default to String for other types
+                }
+            }
+
+            pstmt.executeUpdate();
+            System.out.println("Record updated successfully!");
+        } catch (SQLException e) {
+            System.out.println("Error updating record: " + e.getMessage());
+        }
+    
+
+    
+}
+
+ // Helper Method for Setting PreparedStatement Values
+    //-----------------------------------------------
+    private void setPreparedStatementValues(PreparedStatement pstmt, Object... values) throws SQLException {
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] instanceof Integer) {
+                pstmt.setInt(i + 1, (Integer) values[i]);
+            } else if (values[i] instanceof Double) {
+                pstmt.setDouble(i + 1, (Double) values[i]);
+            } else if (values[i] instanceof Float) {
+                pstmt.setFloat(i + 1, (Float) values[i]);
+            } else if (values[i] instanceof Long) {
+                pstmt.setLong(i + 1, (Long) values[i]);
+            } else if (values[i] instanceof Boolean) {
+                pstmt.setBoolean(i + 1, (Boolean) values[i]);
+            } else if (values[i] instanceof java.util.Date) {
+                pstmt.setDate(i + 1, new java.sql.Date(((java.util.Date) values[i]).getTime()));
+            } else if (values[i] instanceof java.sql.Date) {
+                pstmt.setDate(i + 1, (java.sql.Date) values[i]);
+            } else if (values[i] instanceof java.sql.Timestamp) {
+                pstmt.setTimestamp(i + 1, (java.sql.Timestamp) values[i]);
+            } else {
+                pstmt.setString(i + 1, values[i].toString());
+            }
+        }
+    }
+
+  //-----------------------------------------------
+    // GET SINGLE VALUE METHOD
+    //-----------------------------------------------
+
+    public double getSingleValue(String sql, Object... params) {
+        double result = 0.0;
+        try (Connection conn = connectDB();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            setPreparedStatementValues(pstmt, params);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                result = rs.getDouble(1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving single value: " + e.getMessage());
+        }
+        return result;
+    }
+
+   
+
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+package it2c.somera.mr;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+
+public class Reservation {
+   
+    
+    public void rtransaction(){
+         Scanner sc = new Scanner(System.in);
+     String response;
+     do{
+          System.out.println("TRANSACTION PANEL");
+            
+            System.out.println("1. ADD RESERVATION");
+            System.out.println("2. VIEW RESERVATION ");
+            System.out.println("3. UPDATE RESERVATION");      
+            System.out.println("4. DELETE RESERVATION");
+             System.out.println("5. EXIT");
+            System.out.println("Enter action");           
+            int  act = sc.nextInt();
+           Reservation rs = new Reservation ();
+            switch(act){
+                case 1:         
+                                        rs.addReservation();
+                                        rs.viewReservation();
+               break;
+                
+                case 2:             
+                                         rs.viewReservation();
+                break;
+                
+                case 3:         
+                break;
+                
+                case 4:          
+                break;
+                
+                case 5:
+                break;
+                
+            }
+            
+            System.out.println("Continue? (yes/No)");
+                response = sc.next();
+ 
+    }while(response.equalsIgnoreCase("yes"));
+             
+    }
+
+    private void addReservation(){
+        config conf = new config();
+      Scanner sc = new Scanner(System.in);
+        Guest cs = new Guest();
+      cs.viewGuest();
+      
+        System.out.print("SELECT ID OF THE SELECTED CUSTOMER");
+        int gid = sc.nextInt();
+        
+        String sql= "SELECT r_id FROM Renting WHERE r_id = ?";
+        while(conf.getSingleValue(sql,gid)  == 0){
+            System.out.print("SELECTED ID DOESNT EXIST");
+            System.out.println("PLEASE TRY AGAIN:");
+            gid = sc.nextInt();         
+  }
+        
+        Movies mv = new Movies();
+        mv.viewMovies();
+        System.out.println("ENter ID of MOVies:");
+      int mid = sc.nextInt();
+      
+      String pslq = "SELECT m_id FROM tbl_movies WHERE m_id = ?";
+      while(conf.getSingleValue(pslq, mid) == 0 ){
+          System.out.println("MOVIES DOES NOT EXIST!! SELECT AGAIN = ?");
+          mid = sc.nextInt();   
+          
+      }
+        System.out.println("Enter quantity:");
+        double quantity = sc.nextDouble();
+      
+        
+        String priceqry = "SELECT m_price FROM tbl_movies WHERE m_id = ?";
+        double price  = conf.getSingleValue( priceqry, mid);
+        double due  = price * quantity;
+        
+        System.out.println("...........................................................................");
+        System.out.println("Total Due:"+due);
+        System.out.println(" ...........................................................................");
+        
+        System.out.println("");
+        
+        System.out.println("Enter Cash Recieved:");
+        double rcash = sc.nextDouble();
+        
+        while(rcash < due){
+            System.out.println("Invalid amount, TRY AGAIN!!");
+            rcash = sc.nextDouble();
+        }
+        
+        LocalDate currdate = LocalDate.now();
+        DateTimeFormatter format =  DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        String date = currdate.format(format);
+        
+        String status = "Pending";
+        
+        String reservationqry = "INSERT INTO tbl_reservation ( r_id, m_id, s_quantity, s_due, s_rcash, s_date, s_status) " 
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        
+        conf.addRecord(reservationqry, gid, mid, quantity, due, rcash, date , status);
+                
+    }
+        
+        
+        public void viewReservation(){
+            
+             String qry = "SELECT s_id, r_lname, m_name, s_due, m_duration, s_date, s_status FROM tbl_reservation"
+             + " LEFT JOIN Renting ON Renting.r_id = tbl_reservation.r_id"
+             + " LEFT JOIN tbl_movies ON tbl_movies.m_id = tbl_reservation.m_id";
+
+
+                String[] hrds = {"ORDER ID", "Guest", "Movies", "Due", "Duration", "Date", "Status"};
+                String[] clmns = {"s_id", "r_lname", "m_name", "s_due", "m_duration", "s_date", "s_status"};
+
+                config conf = new config();
+                conf.viewRecords(qry, hrds, clmns);
+        
+        
+            
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
