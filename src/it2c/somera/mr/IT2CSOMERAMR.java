@@ -1,11 +1,6 @@
-
 package it2c.somera.mr;
-
 import java.util.Scanner;
-
-
 public class IT2CSOMERAMR {
-
     public static void main(String[] args){
          Scanner sc = new Scanner (System.in);
         String response;
@@ -17,7 +12,8 @@ public class IT2CSOMERAMR {
             System.out.println("1. Guest");
             System.out.println("2. Movies");
             System.out.println("3. Reservation");      
-            System.out.println("4. Exit");
+            System.out.println("4. Reports");
+            System.out.println("5. Exit");
             
             System.out.println("Enter action");           
             int  action = sc.nextInt();
@@ -39,7 +35,8 @@ public class IT2CSOMERAMR {
                              rs.rtransaction();
                 break;
                 
-                case 4:               
+                case 4:          Reports report = new Reports();
+                                 report.generateReport();      
                    
                 break;
             }
@@ -53,5 +50,4 @@ public class IT2CSOMERAMR {
         }while(response.equals("no"));
         System.out.println("Okay po");
     }
-
 }
