@@ -211,4 +211,52 @@ public List<Map<String, String>> fetchRecords(String query) {
         return records;
     }
 
+ public String[][] getMultipleRecords(String query, String[] columns, Object... params) {
+        ArrayList<String[]> records = new ArrayList<>();
+        
+        try (Connection conn = connectDB(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            // Set query parameters
+            for (int i = 0; i < params.length; i++) {
+                stmt.setObject(i + 1, params[i]);
+            }
+
+            // Execute query and process the result set
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String[] row = new String[columns.length];
+                for (int i = 0; i < columns.length; i++) {
+                    row[i] = rs.getString(columns[i]);
+                }
+                records.add(row);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching multiple records: " + e.getMessage());
+        }
+
+        // Convert ArrayList to 2D array
+        String[][] result = new String[records.size()][columns.length];
+        return records.toArray(result);
+    }
+ public String[] getSingleRecord(String query, String[] fields, Object... parameters) {
+        String[] result = null;
+        try (Connection conn = connectDB();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Set the parameters in the query
+            for (int i = 0; i < parameters.length; i++) {
+                stmt.setObject(i + 1, parameters[i]);
+            }
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                result = new String[fields.length];
+                for (int i = 0; i < fields.length; i++) {
+                    result[i] = rs.getString(fields[i]);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

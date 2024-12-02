@@ -56,7 +56,7 @@ public class Reservation {
                     System.out.println("Invalid action. Please try again.");
                     break;
             }
-
+               rs.updateStatusesAutomatically();
             System.out.print("Continue? (yes/No): ");
             response = sc.next();
 
@@ -83,23 +83,30 @@ public class Reservation {
         System.out.println("Invalid or non-existent Guest ID. Please try again.");
     }
 
-    Movies mv = new Movies();
-    mv.viewAvailableMovies();
+   Movies mv = new Movies();
+    mv.viewAvailableMovies();  // Display available movies
 
     int mid;
+    // Validate movie ID, ensure the movie is available
     while (true) {
-        System.out.print("Enter ID of Movies: ");
+        System.out.print("Enter ID of Movie: ");
         String input = sc.nextLine().trim();
         if (!input.isEmpty() && input.matches("\\d+")) {
             mid = Integer.parseInt(input);
+            
+            // Check if movie is available and not already reserved
             String availabilityQuery = "SELECT m_id FROM tbl_movies WHERE m_id = ? AND m_status = 'available'";
             if (conf.getSingleValue(availabilityQuery, mid) != 0) {
-                break;
+                break;  // Movie is available for reservation
+            } else {
+                System.out.println("Movie is either not available or already reserved. Please select another movie.");
             }
+        } else {
+            System.out.println("Invalid Movie ID. Please try again.");
         }
-        System.out.println("Invalid Movie ID or Movie is not available. Please try again.");
     }
 
+  
     double rcash;
     double price = conf.getSingleValue("SELECT m_price FROM tbl_movies WHERE m_id = ?", mid);
     while (true) {
@@ -108,25 +115,35 @@ public class Reservation {
         if (!input.isEmpty() && input.matches("\\d+(\\.\\d+)?")) {
             rcash = Double.parseDouble(input);
             if (rcash >= price) {
-                break;
+                break;  // Cash is sufficient
+            } else {
+                System.out.println("Cash received must be at least " + price + ". Please try again.");
             }
         }
-        System.out.println("Invalid amount. Cash received must be at least " + price + ". Please try again.");
+        System.out.println("Invalid amount. Please try again.");
     }
 
-    System.out.println("Cash Received: " + rcash);
+    // Calculate and display change
     double change = rcash - price;
+    System.out.println("Cash Received: " + rcash);
     System.out.println("Change: " + change);
 
+    // Get current date for reservation
     LocalDate currdate = LocalDate.now();
     DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     String date = currdate.format(format);
 
+    // Set reservation status as pending
     String status = "PENDING";
     String reservationqry = "INSERT INTO tbl_reservation (r_id, m_id, s_rcash, s_date, s_status) VALUES (?, ?, ?, ?, ?)";
     conf.addRecord(reservationqry, gid, mid, rcash, date, status);
-}
 
+    // Mark the movie as unavailable after reservation
+    String updateMovieStatusQry = "UPDATE tbl_movies SET m_status = 'unavailable' WHERE m_id = ?";
+    conf.updateRecord(updateMovieStatusQry, mid);
+
+    System.out.println("Reservation made successfully. The movie is now unavailable for other reservations.");
+}
 
     public void viewReservation() {
         String qry = "SELECT s_id, r_lname, m_name, m_price, s_rcash - m_price AS change, m_duration, s_date, s_status " +

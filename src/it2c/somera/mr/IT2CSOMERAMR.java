@@ -1,4 +1,4 @@
-package it2c.somera.mr;
+ package it2c.somera.mr;
 import java.util.Scanner;
 public class IT2CSOMERAMR {
     public static void main(String[] args){
@@ -36,7 +36,7 @@ public class IT2CSOMERAMR {
                 break;
                 
                 case 4:          Reports report = new Reports();
-                                 report.generateReport();      
+                                 report.reportMenu();
                    
                 break;
             }
